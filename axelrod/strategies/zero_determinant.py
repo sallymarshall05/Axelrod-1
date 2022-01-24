@@ -285,7 +285,7 @@ class TheMarshall(LRPlayer):
     If opponent is playing random, defect every round following 
     4. If not, play a variation of ZDGTFT2, until the all but last 3 rounds. At round 120, check opponent
     isn't rejecting every extortion, if so, return to TFT
-    5. Defect in the last 3 rounds as this is when players generally defect  '''
+    5. Defect in the last 3 rounds as this is when players generally defect '''
 
 
     def __init__(self, alpha: float = 0.001, phi: float = 0.25, s: float = 0.5) -> None:
