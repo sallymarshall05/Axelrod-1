@@ -23,7 +23,6 @@ axelrod_first = [FirstByDavis,
     FirstByAnonymous,
     TitForTat,
     Random,
-    TheMarshall3
     ]
 
 axelrod_second = [SecondByAppold,
