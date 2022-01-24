@@ -20,6 +20,7 @@ annotated as to avoid some static testing. For example:
     )
     # isort:skip_file
 """
+
 from .adaptive import Adaptive
 from .adaptor import AdaptorBrief, AdaptorLong
 from .alternator import Alternator
@@ -266,6 +267,9 @@ from .worse_and_worse import (
     WorseAndWorse2,
     WorseAndWorse3,
 )
+
+
+
 from .zero_determinant import (
     ZDGTFT2,
     ZDExtort2,
@@ -276,6 +280,7 @@ from .zero_determinant import (
     ZDGen2,
     ZDMischief,
     ZDSet2,
+    TheMarshall
 )
 
 # Note: Meta* strategies are handled in .__init__.py
@@ -499,4 +504,5 @@ all_strategies = [
     ZDMischief,
     ZDSet2,
     e,
+    TheMarshall,
 ]

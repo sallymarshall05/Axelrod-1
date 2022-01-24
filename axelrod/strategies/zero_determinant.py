@@ -1,3 +1,4 @@
+from typing import Tuple
 from axelrod.action import Action
 
 from .memoryone import MemoryOnePlayer
@@ -101,6 +102,8 @@ class LRPlayer(MemoryOnePlayer):
 
         four_vector = [p1, p2, p3, p4]
         self.set_four_vector(four_vector)
+
+
 
 
 class ZDExtortion(LRPlayer):
@@ -263,3 +266,82 @@ class ZDSet2(LRPlayer):
         self, phi: float = 1 / 4, s: float = 0.0, l: float = 2
     ) -> None:
         super().__init__(phi, s, l)
+
+
+
+class TheMarshall(LRPlayer):
+
+    name = "TheMarshall"
+
+
+
+    def __init__(self, phi: float = 0.25, s: float = 0.5) -> None:
+        # l = R will be set by receive_match_attributes
+        super().__init__(phi, s, None)
+
+    def receive_match_attributes(self):
+        (R, P, S, T) = self.match_attributes["game"].RPST()
+        self.l = R
+        super().receive_match_attributes()
+
+
+    def strategy(self, opponent: LRPlayer) -> Action:
+        oppD = 0
+        if len(opponent.history) == 0:
+            return C
+        if opponent.history[-1]==D:
+            oppD+=1
+        if len(opponent.history)<50:
+            if opponent.history[-1] == D:
+                oppD += 1
+                return D #Defect if opponent just defected
+            return  C
+        if len(opponent.history) >= 198:
+            return D
+        if len(opponent.history)<=100:
+            return super().strategy(opponent)
+        if len(opponent.history)==101 and oppD>85:
+            if opponent.history[-1] == D:
+                oppD += 1
+                return D #Defect if opponent just defected
+            return  C
+        if len(self.history)%3==1:
+            return C
+        return super().strategy(opponent)
+    
+
+    '''def strategy(self, opponent: LRPlayer) -> Action:
+        oppD0 = 0 #start counts for how often opponent defects
+        oppD1 = 0
+        if len(opponent.history) == 0:
+            return C #Cooperate on the first round
+            #Play TFT for first 50 moves, to set 'ground rules' for opponsnet
+        if len(self.history)<=50:
+            if opponent.history[-1] == D:
+                oppD0 += 1 #counts how often opponent defects
+                return D #Defect if opponent just defected
+            return  C #Cooperate if opponent just cooperated
+        if 50<len(self.history)<=100:
+            if opponent.history[-1] == D:
+                oppD1 += 1 #count if opponent defects
+            if (len(self.history) % 5)==4:
+                return C #cooperation every 5th round to appear 'nice' & confuse opponent
+            else: #play ZD extortionate strategy
+                super().strategy(opponent)
+        if len(opponent.history) >= 198:
+            return D  #defect on the last 3 rounds
+        if 178>len(self.history)>:
+            if (oppD1+oppD0>=90):
+                return D #always defect if opponent seems to be a defector strategy
+            if (oppD1+oppD0<=10):
+                return C #always cooperate if opponent seems to be a cooperater strategy
+            if (oppD1 > oppD0*1.25): #if opponent appears to rejection extortions, return to TFT
+                if opponent.history[-1] == D:
+                    return D
+                return C
+            return super().strategy(opponent)
+        if 178<=len(self.history)<198: #return to TFT for final 20 (bar 3) rounds before defection 
+            if opponent.history[-1] == D:
+                    return D
+            return C'''
+
